@@ -49,7 +49,7 @@ periods = pd.cut(st.year, [2012, 2017, 2020, 2023, 2026],
 
 t1 = r"""\begin{table}[t]
 \centering
-\caption{Characteristics of the 67 empirical reports (describing 54 independent studies) of soundscape
+\caption{Characteristics of the 67 empirical reports (describing 53 independent studies) of soundscape
 appropriateness. Percentages are of the 67 reports. The full report-level table is in Supplementary
 Information.}
 \label{tab:characteristics}
@@ -164,7 +164,7 @@ order3 = [
     ("\\quad Human or social sounds", "source_human_social"),
     ("\\quad Loudness", "index_loudness"),
     ("\\quad Sound level", "index_sound_level"),
-    ("Functional role of appropriateness", None),
+    ("Associations with other appraisals", None),
     ("\\quad Pleasantness", "SA_pleasantness"),
     ("\\quad Acoustic comfort or soundscape quality", "SA_comfort_quality"),
 ]

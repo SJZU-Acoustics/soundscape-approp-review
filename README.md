@@ -1,4 +1,4 @@
-Code for reproducing the meta-analysis, figures and tables for the manuscript "Soundscape appropriateness as the contextual link between sound sources and perceived quality: a systematic review and selective meta-analysis".
+Code for reproducing the meta-analysis, figures and tables for the manuscript "Soundscape appropriateness as a contextual link between sound sources and perceived quality: a systematic review and selective meta-analysis".
 
 ## Requirements
 
@@ -21,7 +21,7 @@ Code for reproducing the meta-analysis, figures and tables for the manuscript "S
 The pipeline reads a single input: the Mendeley Data workbook
 `Soundscape_appropriateness_evidence_2013-2026.xlsx`.
 
-1. Download it from Mendeley Data: <https://doi.org/10.17632/zt84bkww95.1> (CC BY 4.0).
+1. Download the current version from Mendeley Data: <https://doi.org/10.17632/zt84bkww95> (CC BY 4.0). The workbook describes 67 empirical reports and 53 independent studies. Two reports of the Granada soundwalks are one dataset, and only the 2021 report enters the pooled estimates.
 2. Place the `.xlsx` file in the `data/` folder (see `data/README.md`).
 
 The workbook holds the audited data tables that underlie the manuscript: the report
