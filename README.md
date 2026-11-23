@@ -32,13 +32,13 @@ the workbook's `corpus_citations.csv` and the article reference list.
 
 ## File structure
 
-- `run_all.sh` — master script: loads the workbook, re-runs the meta-analysis, and writes every manuscript figure and table.
+- `run_all.sh` — master script: loads the workbook, re-runs the meta-analysis, and writes the data-derived figure and tables.
 - `load_data.py` — reads the data sheets from the workbook into `intermediate/`.
-- `code/meta_analysis.R` — random-effects pooling (REML, Fisher-z) of the six families that met the five-study threshold, from the deposited `pool_inputs`; writes the pooled estimates and the summary forest plot.
+- `code/meta_analysis.R` — random-effects pooling (REML, Fisher-z) of the six families that met the five-study threshold, from the deposited `pool_inputs`; writes the pooled estimates and the Figure 2 forest plot (points and 95% confidence intervals).
 - `code/build_tables.py` — main-text Tables 1–4 (characteristics, instruments, pooled estimates, GRADE certainty).
-- `code/build_si_tables.py` — Supplementary Tables S1 (full report list) and S2 (non-pooled families).
+- `code/build_si_tables.py` — Supplementary Tables S3 (full report list, file `tableS1_reports.tex`) and S4 (non-pooled families, file `tableS2_nonpooled.tex`).
 
-The conceptual framework (Figure 1) and the PRISMA flow (Figure 2) are drawn in LaTeX/TikZ in the manuscript and are not data-derived, so they are not regenerated here.
+The conceptual framework (Figure 3) and the PRISMA flow (Figure 1) are drawn in LaTeX/TikZ in the manuscript and are not data-derived, so they are not regenerated here.
 
 ## Usage
 
@@ -50,8 +50,8 @@ bash run_all.sh
 
 The full pipeline runs in a few seconds. Outputs are written to:
 
-- `output/figures/` — the summary forest plot (`forest.png`, 600 dpi)
-- `output/tables/` — Tables 1–4 and Supplementary Tables S1–S2 (LaTeX fragments)
+- `output/figures/` — the Figure 2 forest plot (`forest.png`, 600 dpi)
+- `output/tables/` — Tables 1–4 and Supplementary Tables S3–S4 (LaTeX fragments)
 
 The console log lists every pooled estimate (r, 95% CI, 95% prediction interval, I²). To save it:
 

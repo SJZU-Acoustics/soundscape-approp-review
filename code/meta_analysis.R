@@ -59,24 +59,50 @@ res %>%
             I2 = round(I2, 1), inference) %>%
   as.data.frame() %>% print(row.names = FALSE)
 
-# ---- summary forest plot ----------------------------------------------------
+# Figure 2 shows pooled estimates and 95% confidence intervals.
 dir.create("output/figures", recursive = TRUE, showWarnings = FALSE)
-ord <- res %>% arrange(pool_family, estimate_r)
-pd  <- ord %>% mutate(pool_name = factor(pool_name, levels = pool_name))
-p <- ggplot(pd, aes(estimate_r, pool_name)) +
-  geom_vline(xintercept = 0, linetype = "dashed", colour = "grey60") +
-  geom_segment(aes(x = pi_low_r, xend = pi_high_r, y = pool_name, yend = pool_name),
-               linewidth = 0.4, colour = "grey70") +
-  geom_segment(aes(x = ci_low_r, xend = ci_high_r, y = pool_name, yend = pool_name),
-               linewidth = 0.9) +
-  geom_point(aes(size = k), shape = 18) +
-  geom_text(aes(label = sprintf("%.2f [%.2f, %.2f]", estimate_r, ci_low_r, ci_high_r)),
-            hjust = 0, nudge_y = 0.30, size = 2.6) +
-  scale_size_continuous(range = c(2.5, 4.5), guide = "none") +
-  scale_x_continuous(limits = c(-1.05, 1.25), breaks = seq(-1, 1, 0.5)) +
-  labs(x = "Pooled correlation r (thick line 95% CI, thin line 95% prediction interval)",
-       y = NULL) +
-  theme_classic(base_size = 10)
-ggsave("output/figures/forest.png", p, width = 7.4, height = 3.0, dpi = 600)
+theme_pub <- function(base_size = 8, axis_title_size = 9) {
+  theme_classic(base_size = base_size, base_family = "Helvetica") %+replace%
+    theme(
+      axis.line = element_line(colour = "black", linewidth = 0.45),
+      axis.ticks = element_line(colour = "black", linewidth = 0.35),
+      axis.ticks.length = unit(-0.10, "cm"),
+      axis.title = element_text(size = axis_title_size, colour = "black"),
+      axis.text = element_text(size = base_size, colour = "black"),
+      panel.grid = element_blank(),
+      plot.title = element_blank(),
+      plot.background = element_rect(fill = "white", colour = NA),
+      panel.background = element_rect(fill = "white", colour = NA),
+      legend.position = "none"
+    )
+}
+okabe <- c(
+  "H1_source_to_SA" = "#0072B2",
+  "H2_SA_pleasantness" = "#E69F00",
+  "SA_comfort_quality" = "#009E73",
+  "index_to_SA" = "#D55E00"
+)
+name_order <- c(
+  "SA and comfort or quality",
+  "SA and pleasantness",
+  "Sound level to SA",
+  "Loudness to SA",
+  "Human or social sounds to SA",
+  "Natural sounds to SA"
+)
+fig <- res %>%
+  mutate(
+    pool_name = factor(paste0(pool_name, " (k = ", k, ")"),
+                       levels = paste0(name_order, " (k = ", res$k[match(name_order, res$pool_name)], ")"))
+  ) %>%
+  ggplot(aes(x = estimate_r, y = pool_name, colour = pool_family)) +
+  geom_vline(xintercept = 0, linewidth = 0.35, linetype = "dashed", colour = "grey45") +
+  geom_errorbar(aes(xmin = ci_low_r, xmax = ci_high_r), orientation = "y", width = 0.18, linewidth = 0.45) +
+  geom_point(size = 1.8) +
+  scale_colour_manual(values = okabe) +
+  scale_x_continuous(limits = c(-1, 1), breaks = seq(-1, 1, 0.5)) +
+  labs(x = "Pooled correlation (r)", y = NULL) +
+  theme_pub()
+ggsave("output/figures/forest.png", fig, width = 178 / 25.4, height = 120 / 25.4, dpi = 600, bg = "white")
 
 cat("\nWrote intermediate/pooled_estimates.csv and output/figures/forest.png\n")

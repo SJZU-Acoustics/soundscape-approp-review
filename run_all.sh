@@ -24,7 +24,7 @@ echo "== 3/4  Main-text tables (Tables 1-4) =="
 python code/build_tables.py
 
 echo ""
-echo "== 4/4  Supplementary tables (Tables S1-S2) =="
+echo "== 4/4  Supplementary tables (manuscript Tables S3-S4) =="
 python code/build_si_tables.py
 
 echo ""
