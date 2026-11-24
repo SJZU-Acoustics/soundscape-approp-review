@@ -47,16 +47,16 @@ periods = pd.cut(st.year, [2012, 2017, 2020, 2023, 2026],
                  labels=["2013--2017", "2018--2020", "2021--2023", "2024--2026"],
                  include_lowest=True)
 
-t1 = r"""\begin{table}[t]
+t1 = r"""\begin{table}[!tb]
 \centering
 \caption{Characteristics of the 67 empirical reports (describing 53 independent studies) of soundscape
 appropriateness. Percentages are of the 67 reports. The full report-level table is in Supplementary
-Information.}
+Table~S3.}
 \label{tab:characteristics}
 \footnotesize
 \begin{tabular}{@{}lr@{}}
 \toprule
-Characteristic & Studies \\
+Characteristic & Reports \\
 \midrule
 """ + "\n".join([
     block("Publication period", periods,
@@ -119,6 +119,7 @@ resp_map = {
 _cls = {"single ISO/TS 12913 appropriateness item": "single-ISO-item",
         "per-source appropriateness item": "per-source-appropriateness",
         "multi-item appropriateness/place-fit scale": "multi-item-scale"}
+questionnaire_alpha = pd.read_csv(ROOT / "code/questionnaire_alpha.csv").set_index("study_id").alpha
 rows2 = []
 for _, r in ins.iterrows():
     key = _cls.get(r.instrument_class)
@@ -128,23 +129,22 @@ for _, r in ins.iterrows():
     rows2.append(" & ".join([
         name_map.get(r.instrument_class, r.instrument_class),
         str(int(n_cls)),
-        str(r.years),
+        str(r.years).replace("-", "--"),
         resp_map.get(r.response_types, r.response_types),
-        str(int(r.alpha_reported_n)),
+        str(int(sub.study_id.map(questionnaire_alpha).count())),
         f"{rq_cls:.0f}",
     ]) + r" \\")
-t2 = r"""\begin{table}[t]
+t2 = r"""\begin{table}[!tb]
 \centering
 \caption{How soundscape appropriateness is operationalised across the 67 empirical reports (RQ1).
-$\alpha$ reported is the number of studies reporting an internal-consistency reliability for the
-appropriateness measure.}
+Counts in the $\alpha$ column refer to reports giving Cronbach's $\alpha$ for a broader questionnaire or battery. VAS, visual analogue scale.}
 \label{tab:instruments}
 \footnotesize
 \resizebox{\textwidth}{!}{%
 \setlength{\tabcolsep}{5pt}
 \begin{tabular}{@{}lccp{3.7cm}cc@{}}
 \toprule
-Instrument class & Studies & Years & Response formats & $\alpha$ reported & Reporting quality (\%) \\
+Instrument class & Reports & Years & Response formats & $\alpha$ reported & Reporting quality (\%) \\
 \midrule
 """ + "\n".join(rows2) + r"""
 \bottomrule
@@ -182,13 +182,12 @@ for label, key in order3:
         f"{lz(r.pi_low_r)}, {lz(r.pi_high_r)}",
         f"{r.I2:.0f}", inf_map[r.inference],
     ]) + r" \\")
-t3 = r"""\begin{table}[t]
+t3 = r"""\begin{table}[!tb]
 \centering
 \caption{Random-effects pooled correlations for the six association families that met the
-five-study threshold (RQ2 and RQ3). Estimates are back-transformed from Fisher-$z$; positive values
-indicate higher appropriateness. CI, 95\% confidence interval; PI, 95\% prediction interval;
-$k$, number of independent studies. All $p$-values are Benjamini--Hochberg adjusted and were
-significant except for human or social sounds ($q=0.61$).}
+five-study threshold (RQ2 and RQ3). Estimates are back-transformed from Fisher-$z$; positive correlations indicate that the two variables increase together. CI, 95\% confidence interval; PI, 95\% prediction interval;
+$k$, number of independent studies. The sign in the inference column gives the direction when the 95\% CI excludes zero.
+Benjamini--Hochberg adjusted $p$-values ($q$) were below 0.05 except for human or social sounds ($q=0.61$).}
 \label{tab:pooled}
 \footnotesize
 \resizebox{\textwidth}{!}{%
@@ -211,7 +210,7 @@ g = num(pd.read_csv(INT / "grade_certainty.csv"),
 g = g.set_index("pool_label")
 reasons = {
     "source_natural": "Serious risk of bias, inconsistency, indirectness, imprecision",
-    "source_human_social": "Very serious imprecision (null, PI reverses sign); serious risk of bias",
+    "source_human_social": "Very serious inconsistency and imprecision; serious risk of bias and indirectness",
     "index_loudness": "Serious risk of bias, inconsistency, imprecision (CI hugs zero)",
     "index_sound_level": "Serious risk of bias, inconsistency, imprecision",
     "SA_pleasantness": "Serious risk of bias and heterogeneity; large, precise, stable effect",
@@ -228,10 +227,10 @@ for key in order4:
         f"{lz(r.estimate_r)} ({lz(r.ci_low_r)}, {lz(r.ci_high_r)})",
         cert_map[r.final_certainty_after_13_4], reasons[key],
     ]) + r" \\")
-t4 = r"""\begin{table}[t]
+t4 = r"""\begin{table}[!tb]
 \centering
 \caption{Certainty of the pooled evidence, rated with a GRADE approach adapted for observational
-association evidence (RQ3 risk-of-bias and certainty). No pooled family contained a low-risk-of-bias
+association evidence for RQ2 and RQ3. SA, soundscape appropriateness. No pooled family contained a low-risk-of-bias
 study, which drives the universal risk-of-bias downgrade.}
 \label{tab:grade}
 \footnotesize

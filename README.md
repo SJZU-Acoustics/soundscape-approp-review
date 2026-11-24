@@ -35,6 +35,7 @@ the workbook's `corpus_citations.csv` and the article reference list.
 - `run_all.sh` — master script: loads the workbook, re-runs the meta-analysis, and writes the data-derived figure and tables.
 - `load_data.py` — reads the data sheets from the workbook into `intermediate/`.
 - `code/meta_analysis.R` — random-effects pooling (REML, Fisher-z) of the six families that met the five-study threshold, from the deposited `pool_inputs`; writes the pooled estimates and the Figure 2 forest plot (points and 95% confidence intervals).
+- `code/questionnaire_alpha.csv` gives the three numeric coefficients and their source DOIs. Table 2 counts these by instrument class. Six text markers for missing values had been included in the summary count in the version 2 deposit.
 - `code/build_tables.py` — main-text Tables 1–4 (characteristics, instruments, pooled estimates, GRADE certainty).
 - `code/build_si_tables.py` — Supplementary Tables S3 (full report list, file `tableS1_reports.tex`) and S4 (non-pooled families, file `tableS2_nonpooled.tex`).
 
